@@ -1,0 +1,153 @@
+export default function GameHub() {
+  const games = [
+    {
+      title: "2048",
+      category: "Puzzle",
+      image:
+        "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop",
+      url: "https://play2048.co/",
+    },
+    {
+      title: "Tetris",
+      category: "Arcade",
+      image:
+        "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&auto=format&fit=crop",
+      url: "https://tetris.com/play-tetris",
+    },
+    {
+      title: "Chess",
+      category: "Strategy",
+      image:
+        "https://images.unsplash.com/photo-1528819622765-d6bcf132f793?q=80&w=1200&auto=format&fit=crop",
+      url: "https://www.chess.com/play/computer",
+    },
+    {
+      title: "Krunker",
+      category: "FPS",
+      image:
+        "https://images.unsplash.com/photo-1542751110-97427bbecf20?q=80&w=1200&auto=format&fit=crop",
+      url: "https://krunker.io/",
+    },
+  ];
+
+  const [search, setSearch] = React.useState("");
+  const [selectedGame, setSelectedGame] = React.useState(null);
+
+  const filteredGames = games.filter((game) =>
+    game.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="min-h-screen bg-zinc-950 text-white">
+      <header className="border-b border-zinc-800 bg-zinc-900 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-black tracking-tight">
+              NovaPlay Hub
+            </h1>
+            <p className="text-zinc-400 text-sm">
+              Spelportal med sökning, kategorier och stöd för tusentals spel.
+            </p>
+          </div>
+
+          <input
+            type="text"
+            placeholder="Sök efter spel..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full md:w-96 bg-zinc-800 border border-zinc-700 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-cyan-500"
+          />
+        </div>
+      </header>
+
+      <section className="max-w-7xl mx-auto px-6 py-10">
+        <div className="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl p-8 mb-10 shadow-2xl">
+          <h2 className="text-5xl font-black mb-4">3000+ spel på ett ställe</h2>
+          <p className="max-w-2xl text-lg text-cyan-50">
+            Bygg ut sidan genom att koppla den till en databas eller ett API med fler spel.
+            Du kan också lägga till inloggning, favoriter och topplistor.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {filteredGames.map((game) => (
+            <div
+              key={game.title}
+              className="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden hover:scale-105 transition-all duration-300 shadow-xl"
+            >
+              <img
+                src={game.image}
+                alt={game.title}
+                className="h-48 w-full object-cover"
+              />
+
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xl font-bold">{game.title}</h3>
+                  <span className="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-1 rounded-full">
+                    {game.category}
+                  </span>
+                </div>
+
+                <button
+                  onClick={() => setSelectedGame(game)}
+                  className="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-3 rounded-2xl transition"
+                >
+                  Spela nu
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {selectedGame && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-3xl w-full max-w-6xl overflow-hidden shadow-2xl">
+            <div className="flex items-center justify-between p-4 border-b border-zinc-800">
+              <div>
+                <h2 className="text-2xl font-bold">{selectedGame.title}</h2>
+                <p className="text-zinc-400 text-sm">{selectedGame.category}</p>
+              </div>
+
+              <button
+                onClick={() => setSelectedGame(null)}
+                className="bg-red-500 hover:bg-red-400 px-4 py-2 rounded-xl font-bold"
+              >
+                Stäng
+              </button>
+            </div>
+
+            <iframe
+              src={selectedGame.url}
+              title={selectedGame.title}
+              className="w-full h-[75vh] bg-black"
+            />
+          </div>
+        </div>
+      )}
+
+      <section className="max-w-7xl mx-auto px-6 pb-16">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+          <h2 className="text-3xl font-black mb-4">Utveckla vidare</h2>
+
+          <ul className="space-y-3 text-zinc-300">
+            <li>• Lägg till Firebase eller Supabase för användarkonton.</li>
+            <li>• Importera tusentals spel via ett JSON-API.</li>
+            <li>• Bygg ett backend i Node.js för spelhantering.</li>
+            <li>• Lägg till dark/light mode och favoriter.</li>
+            <li>
+              • Roblox kan länkas via officiella sidor eller launchers.
+            </li>
+          </ul>
+
+          <div className="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-yellow-200 text-sm">
+            Den här demon innehåller inte verktyg för att kringgå nätverksfilter eller
+            blockeringar. Om du vill använda en proxy bör den användas lagligt och enligt
+            nätverkets regler.
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
